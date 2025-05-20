@@ -123,9 +123,41 @@ public class RoutingServlet {
     }
 
     @GetMapping("/q3")
-    public String q3View() {
+    public String q3View(HttpServletRequest request) {
+        String message = (String) request.getSession().getAttribute("message");
+        request.setAttribute("message", message);
+        request.getSession().removeAttribute("message");
         System.out.println("q3 view...");
         return "view-q3";
+    }
+
+    @PostMapping("/q3")
+    public RedirectView q3(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        System.out.println("q3 form...");
+        String number1 = request.getParameter("number1");
+        String number2 = request.getParameter("number2");
+        String resultUser = request.getParameter("result");
+
+        if (isInvalidInput(number1, number2, resultUser)) {
+            redirectAttributes.addFlashAttribute("message", "Please enter valid numbers for the calculation.");
+            return new RedirectView("/q3", true);
+        }
+
+        try {
+            double calculatedResult = MathQuestionService.q3Multiplication(number1, number2);
+            System.out.println("User result: " + resultUser + ", answer: " + calculatedResult);
+
+            if (calculatedResult == Double.valueOf(resultUser)) {
+                redirectAttributes.addFlashAttribute("message", "Congratulations! You’ve completed the quiz.");
+                return new RedirectView("/", true);
+            } else {
+                redirectAttributes.addFlashAttribute("message", "Wrong answer, try again.");
+                return new RedirectView("/q3", true);
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("message", "Invalid input. Please enter valid numbers.");
+            return new RedirectView("/q3", true);
+        }
     }
 
     private boolean isInvalidInput(String number1, String number2, String resultUser) {
