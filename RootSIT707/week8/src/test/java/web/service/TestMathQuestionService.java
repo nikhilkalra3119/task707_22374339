@@ -135,4 +135,76 @@ public class TestMathQuestionService {
         // Expecting the result of "-5 - (-3)" to be -2
         Assert.assertEquals(-2, MathQuestionService.q2Subtraction("-5", "-3"), 0);
     }
+
+    // -------------------------
+    // Q3: Multiplication Tests
+    // -------------------------
+
+    // Test for valid multiplication
+    @Test
+    public void testTrueMultiplication() {
+        Assert.assertEquals(10, MathQuestionService.q3Multiplication("2", "5"), 0);
+    }
+
+    // Test for multiplication with the first number empty
+    @Test
+    public void testMultiplicationNumber1Empty() {
+        try {
+            MathQuestionService.q3Multiplication("", "3");
+            Assert.fail("Expected NumberFormatException for empty input.");
+        } catch (NumberFormatException e) {
+            // Expected exception
+        }
+    }
+
+    // Test for multiplication with the second number empty
+    @Test
+    public void testMultiplicationNumber2Empty() {
+        try {
+            MathQuestionService.q3Multiplication("3", "");
+            Assert.fail("Expected NumberFormatException for empty input.");
+        } catch (NumberFormatException e) {
+            // Expected exception
+        }
+    }
+
+    // Test for multiplication with both numbers empty
+    @Test
+    public void testMultiplicationBothNumbersEmpty() {
+        try {
+            MathQuestionService.q3Multiplication("", "");
+            Assert.fail("Expected NumberFormatException for empty input.");
+        } catch (NumberFormatException e) {
+            // Expected exception
+        }
+    }
+
+    // Test for multiplication with invalid number format
+    @Test
+    public void testMultiplicationInvalidNumberFormat() {
+        try {
+            MathQuestionService.q3Multiplication("abc", "2");
+            Assert.fail("Expected NumberFormatException for invalid input.");
+        } catch (NumberFormatException e) {
+            // Expected exception
+        }
+    }
+
+    // Test for multiplication with zero input
+    @Test
+    public void testMultiplicationZeroInput() {
+        Assert.assertEquals(0, MathQuestionService.q3Multiplication("0", "10"), 0);
+    }
+
+    // Test for multiplication with negative numbers
+    @Test
+    public void testMultiplicationNegativeInputs() {
+        Assert.assertEquals(-6, MathQuestionService.q3Multiplication("-2", "3"), 0);
+    }
+
+    // Test for multiplication with two negative numbers
+    @Test
+    public void testMultiplicationTwoNegativeInputs() {
+        Assert.assertEquals(6, MathQuestionService.q3Multiplication("-2", "-3"), 0);
+    }
 }
